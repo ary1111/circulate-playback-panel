@@ -13,8 +13,8 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
   let endOfDay = startOfDay + (86400 * 1000)
   // Default 9-5
   console.log(options.startTimeOptions)
-  const minTime = (startOfDay+ parseInt(options.startTimeOptions));
-  const maxTime = (startOfDay+ parseInt(options.endTimeOptions))
+  const minTime = (startOfDay+ parseInt(options.startTimeOptions,10));
+  const maxTime = (startOfDay+ parseInt(options.endTimeOptions,10))
   useEffect(() => {
     setCurrentTime(minTime)
   },[minTime])
