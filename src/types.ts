@@ -6,4 +6,5 @@ export interface SimpleOptions {
   seriesCountSize: SeriesSize;
   startTimeOptions: TimeOptions;
   endTimeOptions: TimeOptions;
+  enableScrubber: boolean;
 }

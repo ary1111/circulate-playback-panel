@@ -7,14 +7,13 @@ interface Props extends PanelProps<SimpleOptions> {}
 
 export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,timeRange,onChangeTimeRange }) => {
   const [currentTime,setCurrentTime] = useState<number>(0)
+  const enableScrubber = options.enableScrubber
   let timeFrom = timeRange.from.valueOf()
   let startOfDay = timeFrom - (timeFrom % (86400 * 1000)) // Calculate start of day for scrubber
-  //startOfDay += ((new Date).getTimezoneOffset() * 60 * 1000);
   let endOfDay = startOfDay + (86400 * 1000)
-  // Default 9-5
-  console.log(options.startTimeOptions)
   const minTime = (startOfDay+ parseInt(options.startTimeOptions,10));
   const maxTime = (startOfDay+ parseInt(options.endTimeOptions,10))
+  console.log(options.enableScrubber)
   useEffect(() => {
     setCurrentTime(minTime)
   },[minTime])
@@ -26,8 +25,11 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
   };
 
   useEffect(()=>{
-    onChangeTimeRange({ from:timeFrom, to: currentTime })
-  },[timeFrom,currentTime,onChangeTimeRange])
+    if (enableScrubber === true){
+      onChangeTimeRange({ from:timeFrom, to: currentTime })
+    }
+    
+  },[timeFrom,currentTime,onChangeTimeRange,enableScrubber])
   
   const onSliderChange = (value: any) =>{
     console.log("Value",value)
@@ -55,11 +57,11 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
   return (
     <div>
       <InlineField label = {"Current Time"} disabled = {true} >
-        <AutoSizeInput placeholder = {toHHMMSS(currentTime)}></AutoSizeInput>  
+        <AutoSizeInput placeholder = {enableScrubber ? toHHMMSS(currentTime): 'Disabled'}></AutoSizeInput>  
       </InlineField>
       
       <div style={{ display: "flex" }}>
-      <Slider style = {{marginLeft: 10, width: panelWidth - 50}} min={minTime} max={maxTime} value = {currentTime} onChange={onSliderChange} step = {600000} marks = {marks}></Slider>
+      <Slider disabled = {!enableScrubber} style = {{marginLeft: 10, width: panelWidth - 50}} min={minTime} max={maxTime} value = {currentTime} onChange={onSliderChange} step = {600000} marks = {marks}></Slider>
       </div>
     </div>
   );

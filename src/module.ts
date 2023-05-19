@@ -19,6 +19,11 @@ export const plugin = new PanelPlugin<SimpleOptions>(PlaybackPanel).setPanelOpti
   }
   console.log(selectOptions)
   return builder
+    .addBooleanSwitch({
+      path:'enableScrubber',
+      name: 'Enable Scrubber',
+      defaultValue: false
+    })
     .addSelect({
       path: 'startTimeOptions',
       defaultValue: 32400000,
