@@ -29,7 +29,7 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
 
   useEffect(()=>{
     onChangeTimeRange({ from:timeFrom, to: currentTime })
-  },[currentTime,timeFrom,currentTime])
+  },[currentTime,timeFrom,currentTime,onChangeTimeRange])
   
   const onSliderChange = (value: any) =>{
     console.log("Value",value)
