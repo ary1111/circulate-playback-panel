@@ -1,8 +1,8 @@
 import { PanelPlugin } from '@grafana/data';
 import { SimpleOptions } from './types';
-import { SimplePanel } from './components/SimplePanel';
+import { PlaybackPanel } from './components/PlaybackPanel';
 
-export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOptions((builder) => {
+export const plugin = new PanelPlugin<SimpleOptions>(PlaybackPanel).setPanelOptions((builder) => {
   return builder
     .addTextInput({
       path: 'text',
