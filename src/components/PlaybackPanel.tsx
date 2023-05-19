@@ -21,15 +21,15 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
     setCurrentTime(minTime)
   },[minTime])
   const toHHMMSS = (secs: number) => {
-    var d = new Date(1000*Math.round(secs/1000)); // round to nearest second
+    let d = new Date(1000*Math.round(secs/1000)); // round to nearest second
     function pad(i: number) { return ('0'+i).slice(-2); }
-    var str = pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes())// + ':' + pad(d.getUTCSeconds());
+    let str = pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes())// + ':' + pad(d.getUTCSeconds());
     return str
   };
 
   useEffect(()=>{
     onChangeTimeRange({ from:timeFrom, to: currentTime })
-  },[currentTime])
+  },[currentTime,timeFrom,currentTime])
   
   const onSliderChange = (value: any) =>{
     console.log("Value",value)
@@ -48,7 +48,7 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
   for (let i = 0; i < hourlyVariables.length; i++){
     hour +=1
     function pad(i: number) { return ('0'+i).slice(-2); }
-    var str = pad(hour) + ':00'
+    let str = pad(hour) + ':00'
     selectOptions.push({label:str,value:hourlyVariables[i]})
     marks[hourlyVariables[i]] = str
   }
