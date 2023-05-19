@@ -1,22 +1,20 @@
 import React, {useState,useEffect} from 'react';
 import { PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
-import { InlineField,AutoSizeInput,Select,Label} from '@grafana/ui';
+import { InlineField,AutoSizeInput} from '@grafana/ui';
 import Slider from 'rc-slider'
 interface Props extends PanelProps<SimpleOptions> {}
 
 export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,timeRange,onChangeTimeRange }) => {
   const [currentTime,setCurrentTime] = useState<number>(0)
   let timeFrom = timeRange.from.valueOf()
-  
-
-  
   let startOfDay = timeFrom - (timeFrom % (86400 * 1000)) // Calculate start of day for scrubber
   //startOfDay += ((new Date).getTimezoneOffset() * 60 * 1000);
   let endOfDay = startOfDay + (86400 * 1000)
   // Default 9-5
-  const [minTime,setMinTime] = useState<number>(startOfDay+ 3600000*9);
-  const [maxTime,setMaxTime] = useState<number>(startOfDay+ 3600000*17)
+  console.log(options.startTimeOptions)
+  const minTime = (startOfDay+ parseInt(options.startTimeOptions));
+  const maxTime = (startOfDay+ parseInt(options.endTimeOptions))
   useEffect(() => {
     setCurrentTime(minTime)
   },[minTime])
@@ -53,14 +51,9 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
     marks[hourlyVariables[i]] = str
   }
   let panelWidth = width;
+  console.log(minTime)
   return (
     <div>
-      <div style = {{display: "flex"}}>
-      <Label>Start Time</Label>
-      <Select options = {selectOptions} placeholder = {toHHMMSS(minTime)} onChange = {(v) => {setMinTime(v.value as number)}}></Select>
-      <Label>End Time</Label>
-      <Select options = {selectOptions} placeholder = {toHHMMSS(maxTime)} onChange = {(v) => {setMaxTime(v.value as number)}}></Select>
-      </div>
       <InlineField label = {"Current Time"} disabled = {true} >
         <AutoSizeInput placeholder = {toHHMMSS(currentTime)}></AutoSizeInput>  
       </InlineField>

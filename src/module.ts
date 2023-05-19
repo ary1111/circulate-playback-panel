@@ -3,38 +3,36 @@ import { SimpleOptions } from './types';
 import { PlaybackPanel } from './components/PlaybackPanel';
 
 export const plugin = new PanelPlugin<SimpleOptions>(PlaybackPanel).setPanelOptions((builder) => {
+  //
+  let hourlyVariables = [];
+  for (let i = 0;i < 24; i++){
+    hourlyVariables.push(3600000*i)
+  }
+  let hour = 0
+  let selectOptions = []
+  for (let i = 0; i < hourlyVariables.length; i++){
+    
+    function pad(i: number) { return ('0'+i).slice(-2); }
+    let str = pad(hour) + ':00'
+    selectOptions.push({label:str,value:hourlyVariables[i]})
+    hour +=1
+  }
+  console.log(selectOptions)
   return builder
-    .addTextInput({
-      path: 'text',
-      name: 'Simple text option',
-      description: 'Description of panel option',
-      defaultValue: 'Default value of text input option',
-    })
-    .addBooleanSwitch({
-      path: 'showSeriesCount',
-      name: 'Show series counter',
-      defaultValue: false,
-    })
-    .addRadio({
-      path: 'seriesCountSize',
-      defaultValue: 'sm',
-      name: 'Series counter size',
+    .addSelect({
+      path: 'startTimeOptions',
+      defaultValue: 32400000,
+      name: 'Start Time',
       settings: {
-        options: [
-          {
-            value: 'sm',
-            label: 'Small',
-          },
-          {
-            value: 'md',
-            label: 'Medium',
-          },
-          {
-            value: 'lg',
-            label: 'Large',
-          },
-        ],
-      },
-      showIf: (config) => config.showSeriesCount,
+        options: selectOptions
+      }
+    })
+    .addSelect({
+      path: 'endTimeOptions',
+      defaultValue: 61200000,
+      name: 'End Time',
+      settings: {
+        options: selectOptions
+      }
     });
 });
