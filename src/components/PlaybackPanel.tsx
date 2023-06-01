@@ -11,8 +11,8 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
   let timeFrom = timeRange.from.valueOf()
   let startOfDay = timeFrom - (timeFrom % (86400 * 1000)) // Calculate start of day for scrubber
   let endOfDay = startOfDay + (86400 * 1000)
-  const minTime = (startOfDay+ parseInt(options.startTimeOptions,10));
-  const maxTime = (startOfDay+ parseInt(options.endTimeOptions,10))
+  const minTime = (startOfDay+ parseInt(options.startTimeOptions,10))-(14400*1000);
+  const maxTime = (startOfDay+ parseInt(options.endTimeOptions,10))-((14400*1000));
   console.log(options.enableScrubber)
   useEffect(() => {
     setCurrentTime(minTime)
@@ -20,13 +20,13 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
   const toHHMMSS = (secs: number) => {
     let d = new Date(1000*Math.round(secs/1000)); // round to nearest second
     function pad(i: number) { return ('0'+i).slice(-2); }
-    let str = pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes())// + ':' + pad(d.getUTCSeconds());
+    let str = pad(d.getHours()) + ':' + pad(d.getMinutes())// + ':' + pad(d.getUTCSeconds());
     return str
   };
 
   useEffect(()=>{
     if (enableScrubber === true){
-      onChangeTimeRange({ from:timeFrom, to: currentTime })
+      onChangeTimeRange({ from:timeFrom, to: currentTime+(14400*1000) })
     }
     
   },[timeFrom,currentTime,onChangeTimeRange,enableScrubber])
@@ -57,7 +57,7 @@ export const PlaybackPanel: React.FC<Props> = ({ options, data, width, height,ti
   return (
     <div>
       <InlineField label = {"Current Time"} disabled = {true} >
-        <AutoSizeInput placeholder = {enableScrubber ? toHHMMSS(currentTime): 'Disabled'}></AutoSizeInput>  
+        <AutoSizeInput placeholder = {enableScrubber ? toHHMMSS(currentTime+(14400*1000)): 'Disabled'}></AutoSizeInput>  
       </InlineField>
       
       <div style={{ display: "flex" }}>

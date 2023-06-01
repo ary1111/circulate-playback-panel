@@ -10,7 +10,7 @@ export const plugin = new PanelPlugin<SimpleOptions>(PlaybackPanel).setPanelOpti
   }
   let hour = 0
   let selectOptions = []
-  for (let i = 0; i < hourlyVariables.length; i++){
+  for (let i = 4; i < hourlyVariables.length-4; i++){
     
     function pad(i: number) { return ('0'+i).slice(-2); }
     let str = pad(hour) + ':00'
